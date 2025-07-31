@@ -3,20 +3,20 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Workforce.Domain.Infra.Role.Entity;
 
-namespace Workforce.Services.Role
+namespace Workforce.Services.Infra.Role.User
 {
-    public class UserService : CrudService<User>, IUserService
+    public class UserService : CrudService<Domain.Infra.Role.Entity.User>, IUserService
     {
         public UserService(HttpClient httpClient) : base(httpClient, "api/infra/role/User")
         {
         }
 
-        public async Task<User> LoginAsync(string username, string password)
+        public async Task<Domain.Infra.Role.Entity.User> LoginAsync(string username, string password)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/login", new { username, password });
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<User>();
+                return await response.Content.ReadFromJsonAsync<Domain.Infra.Role.Entity.User>();
             }
             return null;
         }
