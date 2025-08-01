@@ -130,7 +130,7 @@ namespace Workforce.Services
         /// Gets all entities
         /// </summary>
         /// <returns>List of all entities</returns>
-        public async Task<IList<T>> GetAll()
+        public virtual async Task<IList<T>> GetAll()
         {
             try
             {
