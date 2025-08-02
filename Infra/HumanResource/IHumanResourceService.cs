@@ -1,10 +1,9 @@
 using Workforce.Services;
-using Workforce.Domain.Infra.Role.Entity;
 
 namespace Workforce.Services.Infra.HumanResource
 {
-    public interface IHumanResourceService : ICrudService<Domain.Infra.Role.Entity.HumanResource>
+    public interface IHumanResourceService : ICrudService<Domain.Infra.Role.HumanResource.Entity.HumanResource>
     {
-        Task<IList<Domain.Infra.Role.Entity.HumanResource>> GetAllByEnvironmentId(int environmentId);
+        Task<IList<Domain.Infra.Role.HumanResource.Entity.HumanResource>> GetAllByEnvironmentId(int environmentId);
     }
 }

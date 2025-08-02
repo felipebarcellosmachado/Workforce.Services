@@ -1,9 +1,7 @@
-using Workforce.Domain.Infra.Role.Entity;
-
 namespace Workforce.Services.Infra.Role.User
 {
-    public interface IUserService : ICrudService<Domain.Infra.Role.Entity.User>
+    public interface IUserService : ICrudService<Domain.Infra.Role.User.Entity.User>
     {
-        Task<Domain.Infra.Role.Entity.User> LoginAsync(string username, string password);
+        Task<Domain.Infra.Role.User.Entity.User> LoginAsync(string username, string password);
     }
 }
