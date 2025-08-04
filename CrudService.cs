@@ -29,7 +29,9 @@ namespace Workforce.Services
             {
                 PropertyNameCaseInsensitive = true,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+                WriteIndented = false,
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
             };
         }
         
@@ -47,6 +49,10 @@ namespace Workforce.Services
                 Console.WriteLine($"CrudService.Insert: Making POST request to {_baseUri}");
                 Console.WriteLine($"CrudService.Insert: HttpClient BaseAddress: {_httpClient.BaseAddress}");
                 
+                // Serialize the request content for logging
+                var requestJson = JsonSerializer.Serialize(dto, _jsonOptions);
+                Console.WriteLine($"CrudService.Insert: Request content: {requestJson}");
+                
                 var response = await _httpClient.PostAsJsonAsync(_baseUri, dto, _jsonOptions);
                 
                 Console.WriteLine($"CrudService.Insert: Response status: {response.StatusCode}");
@@ -57,14 +63,55 @@ namespace Workforce.Services
                     Console.WriteLine($"CrudService.Insert: Error response content: {errorContent}");
                     
                     // Log request details for debugging
-                    var requestContent = await response.RequestMessage?.Content?.ReadAsStringAsync() ?? "null";
+                    var requestContent = JsonSerializer.Serialize(dto, _jsonOptions);
                     Console.WriteLine($"CrudService.Insert: Request content: {requestContent}");
+                    
+                    // Throw specific exception with detailed error message
+                    if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        throw new HttpRequestException($"Bad Request (400): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        throw new HttpRequestException($"Unauthorized (401): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        throw new HttpRequestException($"Forbidden (403): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new HttpRequestException($"Not Found (404): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        throw new HttpRequestException($"Conflict (409): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new HttpRequestException($"Internal Server Error (500): {errorContent}", null, response.StatusCode);
+                    }
+                    else
+                    {
+                        throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                    }
                 }
                 
                 response.EnsureSuccessStatusCode();
                 
                 var result = await response.Content.ReadFromJsonAsync<T>(_jsonOptions);
+                Console.WriteLine($"CrudService.Insert: Successfully created entity");
                 return result ?? throw new InvalidOperationException("Response returned null");
+            }
+            catch (HttpRequestException)
+            {
+                // Re-throw HttpRequestException as-is
+                throw;
+            }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                Console.WriteLine($"CrudService.Insert: Request timeout");
+                throw new TimeoutException("The request timed out", ex);
             }
             catch (Exception ex)
             {
@@ -88,8 +135,25 @@ namespace Workforce.Services
             {
                 if (id <= 0) throw new ArgumentException("ID must be greater than zero", nameof(id));
                 
+                Console.WriteLine($"CrudService.Delete: Making DELETE request to {_baseUri}/{id}");
+                
                 var response = await _httpClient.DeleteAsync($"{_baseUri}/{id}");
+                
+                Console.WriteLine($"CrudService.Delete: Response status: {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"CrudService.Delete: Error response content: {errorContent}");
+                    
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new HttpRequestException($"Entity with ID {id} not found", null, response.StatusCode);
+                    }
+                }
+                
                 response.EnsureSuccessStatusCode();
+                Console.WriteLine($"CrudService.Delete: Successfully deleted entity with ID {id}");
             }
             catch (Exception ex)
             {
@@ -109,14 +173,22 @@ namespace Workforce.Services
             {
                 if (id <= 0) throw new ArgumentException("ID must be greater than zero", nameof(id));
                 
+                Console.WriteLine($"CrudService.GetById: Making GET request to {_baseUri}/{id}");
+                
                 var response = await _httpClient.GetAsync($"{_baseUri}/{id}");
                 
+                Console.WriteLine($"CrudService.GetById: Response status: {response.StatusCode}");
+                
                 if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine($"CrudService.GetById: Entity with ID {id} not found");
                     return default(T)!;
+                }
                     
                 response.EnsureSuccessStatusCode();
                 
                 var result = await response.Content.ReadFromJsonAsync<T>(_jsonOptions);
+                Console.WriteLine($"CrudService.GetById: Successfully retrieved entity with ID {id}");
                 return result!;
             }
             catch (Exception ex)
@@ -134,10 +206,23 @@ namespace Workforce.Services
         {
             try
             {
+                Console.WriteLine($"CrudService.GetAll: Making GET request to {_baseUri}/all");
+                
                 var response = await _httpClient.GetAsync($"{_baseUri}/all");
+                
+                Console.WriteLine($"CrudService.GetAll: Response status: {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"CrudService.GetAll: Error response content: {errorContent}");
+                }
+                
                 response.EnsureSuccessStatusCode();
                 
                 var result = await response.Content.ReadFromJsonAsync<IList<T>>(_jsonOptions);
+                var count = result?.Count ?? 0;
+                Console.WriteLine($"CrudService.GetAll: Successfully retrieved {count} entities");
                 return result ?? new List<T>();
             }
             catch (Exception ex)
@@ -165,10 +250,36 @@ namespace Workforce.Services
                 var id = idProperty.GetValue(dto) 
                     ?? throw new ArgumentException("DTO 'Id' property cannot be null");
 
+                Console.WriteLine($"CrudService.Update: Making PUT request to {_baseUri}/{id}");
+                Console.WriteLine($"CrudService.Update: Request data: {JsonSerializer.Serialize(dto, _jsonOptions)}");
+
                 var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/{id}", dto, _jsonOptions);
+                
+                Console.WriteLine($"CrudService.Update: Response status: {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"CrudService.Update: Error response content: {errorContent}");
+                    
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new HttpRequestException($"Entity with ID {id} not found for update", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        throw new HttpRequestException($"Bad Request (400): {errorContent}", null, response.StatusCode);
+                    }
+                    else if (response.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        throw new HttpRequestException($"Conflict (409): {errorContent}", null, response.StatusCode);
+                    }
+                }
+                
                 response.EnsureSuccessStatusCode();
                 
                 var result = await response.Content.ReadFromJsonAsync<T>(_jsonOptions);
+                Console.WriteLine($"CrudService.Update: Successfully updated entity with ID {id}");
                 return result ?? throw new InvalidOperationException("Response returned null");
             }
             catch (Exception ex)
