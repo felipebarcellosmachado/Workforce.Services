@@ -1,5 +1,8 @@
 using System.Net.Http;
+using System.Text.Json;
+using System.Net;
 using Workforce.Domain.Infra.Environment.Entity;
+using System.Net.Http.Json;
 
 namespace Workforce.Services.Infra.Environment
 {
@@ -7,6 +10,45 @@ namespace Workforce.Services.Infra.Environment
     {
         public EnvironmentService(HttpClient httpClient) : base(httpClient, "api/infra/Environment")
         {
+        }
+
+        public async Task<Domain.Infra.Environment.Entity.Environment> GetByName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name)) 
+                    throw new ArgumentException("Name cannot be null or empty", nameof(name));
+
+                Console.WriteLine($"EnvironmentService.GetByName: Making GET request to {_baseUri}/name/{Uri.EscapeDataString(name)}");
+
+                var response = await _httpClient.GetAsync($"{_baseUri}/name/{Uri.EscapeDataString(name)}");
+
+                Console.WriteLine($"EnvironmentService.GetByName: Response status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine($"EnvironmentService.GetByName: Environment with name '{name}' not found");
+                    return null!;
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"EnvironmentService.GetByName: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<Domain.Infra.Environment.Entity.Environment>(_jsonOptions);
+                Console.WriteLine($"EnvironmentService.GetByName: Successfully retrieved environment with name '{name}'");
+                return result!;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in EnvironmentService.GetByName: {ex.Message}");
+                throw;
+            }
         }
     }
 }
