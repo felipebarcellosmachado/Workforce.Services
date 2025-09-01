@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
 {
     public class WorkAgreementService : CrudService<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>, IWorkAgreementService
     {
-        public WorkAgreementService(HttpClient httpClient) : base(httpClient, "api/infra/workagreement")
+        public WorkAgreementService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/workagreement")
         {
         }
 

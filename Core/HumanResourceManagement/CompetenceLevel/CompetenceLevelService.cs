@@ -6,7 +6,7 @@ namespace Workforce.Services.Infra.HumanResource.CompetenceLevel
 {
     public class CompetenceLevelService : CrudService<Domain.Core.HumanResourceManagement.CompetenceLevel.Entity.CompetenceLevel>, ICompetenceLevelService
     {
-        public CompetenceLevelService(HttpClient httpClient) : base(httpClient, "api/infra/humanresource/competencelevel")
+        public CompetenceLevelService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/competencelevel")
         {
         }
 

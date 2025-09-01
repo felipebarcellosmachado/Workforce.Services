@@ -6,7 +6,7 @@ namespace Workforce.Services.Infra.HumanResource.Skill
     public class SkillService : CrudService<Domain.Core.HumanResourceManagement.Skill.Entity.Skill>, ISkillService
     {
         public SkillService(HttpClient httpClient) 
-            : base(httpClient, "api/infra/humanresource/skill")
+            : base(httpClient, "api/core/human_resource/skill")
         {
         }
 

@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkingHour
 {
     public class WorkingHourService : CrudService<Domain.Core.HumanResourceManagement.WorkingHour.Entity.WorkingHour>, IWorkingHourService
     {
-        public WorkingHourService(HttpClient httpClient) : base(httpClient, "api/infra/workinghour")
+        public WorkingHourService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/workinghour")
         {
         }
 

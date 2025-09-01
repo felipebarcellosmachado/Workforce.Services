@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.DemandManagement.DemandEstimative
 {
     public class DemandEstimativeService : CrudService<Domain.Core.DemandManagement.DemandEstimative.Entity.DemandEstimative>, IDemandEstimativeService
     {
-        public DemandEstimativeService(HttpClient httpClient) : base(httpClient, "api/demand-management/demand-estimatives")
+        public DemandEstimativeService(HttpClient httpClient) : base(httpClient, "api/core/demand-management/demand-estimatives")
         {
         }
 

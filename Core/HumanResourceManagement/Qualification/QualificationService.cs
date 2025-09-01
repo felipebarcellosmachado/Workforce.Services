@@ -5,7 +5,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.Qualification
     public class QualificationService : CrudService<Domain.Core.HumanResourceManagement.Qualification.Entity.Qualification>, IQualificationService
     {
         public QualificationService(HttpClient httpClient) 
-            : base(httpClient, "api/qualification")
+            : base(httpClient, "api/core/human_resource/qualification")
         {
         }
 
@@ -61,7 +61,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.Qualification
                 response.EnsureSuccessStatusCode();
                 
                 var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.Qualification.Entity.Qualification>(_jsonOptions);
-                Console.WriteLine($"QualificationService.GetByEnvironmentIdAndId: Successfully retrieved qualification with ID {id} for environment {environmentId}");
+                Console.WriteLine($"QualificationService.GetByEnvironmentIdAndId: Successfully retrieved qualification {id} for environment {environmentId}");
                 return result!;
             }
             catch (Exception ex)

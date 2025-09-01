@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.HumanResource
 {
     public class HumanResourceService : CrudService<Domain.Core.HumanResourceManagement.HumanResource.Entity.HumanResource>, IHumanResourceService
     {
-        public HumanResourceService(HttpClient httpClient) : base(httpClient, "api/infra/humanresource")
+        public HumanResourceService(HttpClient httpClient) : base(httpClient, "api/core/humanresource")
         {
         }
 

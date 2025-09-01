@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.Behaviour
 {
     public class BehaviourService : CrudService<Domain.Core.HumanResourceManagement.Behaviour.Entity.Behaviour>, IBehaviourService
     {
-        public BehaviourService(HttpClient httpClient) : base(httpClient, "api/infra/humanresource/behaviour")
+        public BehaviourService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/behaviour")
         {
         }
 
