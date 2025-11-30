@@ -50,5 +50,44 @@ namespace Workforce.Services.Infra.Environment
                 throw;
             }
         }
+
+        public async Task<IList<Domain.Infra.Environment.Entity.Environment>> GetAllByUserId(int userId)
+        {
+            try
+            {
+                if (userId <= 0)
+                    throw new ArgumentException("UserId must be greater than zero", nameof(userId));
+
+                Console.WriteLine($"EnvironmentService.GetAllByUserId: Making GET request to {_baseUri}/user/{userId}");
+
+                var response = await _httpClient.GetAsync($"{_baseUri}/user/{userId}");
+
+                Console.WriteLine($"EnvironmentService.GetAllByUserId: Response status: {response.StatusCode}");
+
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine($"EnvironmentService.GetAllByUserId: No environments found for user with ID {userId}");
+                    return new List<Domain.Infra.Environment.Entity.Environment>();
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"EnvironmentService.GetAllByUserId: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Infra.Environment.Entity.Environment>>(_jsonOptions);
+                Console.WriteLine($"EnvironmentService.GetAllByUserId: Successfully retrieved {result?.Count ?? 0} environments for user with ID {userId}");
+                return result ?? new List<Domain.Infra.Environment.Entity.Environment>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in EnvironmentService.GetAllByUserId: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
