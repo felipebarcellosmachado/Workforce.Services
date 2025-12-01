@@ -7,7 +7,7 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
     public class LeaveRequestService : CrudService<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest>, ILeaveRequestService
     {
         public LeaveRequestService(HttpClient httpClient) 
-            : base(httpClient, "api/leave-requests")
+            : base(httpClient, "api/core/leave-management/leave-requests")
         {
         }
 
@@ -23,7 +23,7 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
                 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
                     Console.WriteLine($"LeaveRequestService.GetAllByEnvironmentIdAsync: Error response content: {errorContent}");
                 }
                 
