@@ -4,13 +4,13 @@ using Workforce.Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity;
 
 namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
 {
-    public class BaseTourScheduleService : CrudService<BaseTourScheduleEstimative>, IBaseTourScheduleService
+    public class BaseTourScheduleService : CrudService<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>, IBaseTourScheduleService
     {
-        public BaseTourScheduleService(HttpClient httpClient) : base(httpClient, "api/core/tour-schedule-management/basetourscheduleestimative")
+        public BaseTourScheduleService(HttpClient httpClient) : base(httpClient, "api/core/tour-schedule-management/basetourschedule")
         {
         }
 
-        public async Task<IList<BaseTourScheduleEstimative>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        public async Task<IList<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
         {
             try
             {
@@ -33,10 +33,10 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
                 
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<BaseTourScheduleEstimative>>(_jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>>(_jsonOptions, ct);
                 var count = result?.Count ?? 0;
                 Console.WriteLine($"BaseTourScheduleService.GetAllByEnvironmentIdAsync: Successfully retrieved {count} estimatives for environment {environmentId}");
-                return result ?? new List<BaseTourScheduleEstimative>();
+                return result ?? new List<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>();
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
             }
         }
 
-        public async Task<BaseTourScheduleEstimative?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
+        public async Task<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
         {
             try
             {
@@ -60,13 +60,13 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
                 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    Console.WriteLine($"BaseTourScheduleService.GetByEnvironmentIdAndIdAsync: BaseTourScheduleEstimative with ID {id} not found for environment {environmentId}");
+                    Console.WriteLine($"BaseTourScheduleService.GetByEnvironmentIdAndIdAsync: BaseTourSchedule with ID {id} not found for environment {environmentId}");
                     return null;
                 }
                     
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<BaseTourScheduleEstimative>(_jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>(_jsonOptions, ct);
                 Console.WriteLine($"BaseTourScheduleService.GetByEnvironmentIdAndIdAsync: Successfully retrieved estimative {id} for environment {environmentId}");
                 return result;
             }
