@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 
-namespace Workforce.Services.Core.HumanResourceManagement.WorkingHour
+namespace Workforce.Services.Core.HumanResourceManagement.WorkingTime
 {
-    public class WorkingHourService : CrudService<Domain.Core.HumanResourceManagement.WorkingHour.Entity.WorkingTime>, IWorkingHourService
+    public class WorkingTimeService : CrudService<Domain.Core.HumanResourceManagement.WorkingHour.Entity.WorkingTime>, IWorkingTimeService
     {
-        public WorkingHourService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/workinghour")
+        public WorkingTimeService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/workingtime")
         {
         }
 
@@ -22,7 +22,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkingHour
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in WorkingHourService.GetByEnvironmentIdAndId: {ex.Message}");
+                Console.WriteLine($"Error in WorkingTimeService.GetByEnvironmentIdAndId: {ex.Message}");
                 throw;
             }
         }
@@ -39,7 +39,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkingHour
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in WorkingHourService.GetAllByEnvironmentId: {ex.Message}");
+                Console.WriteLine($"Error in WorkingTimeService.GetAllByEnvironmentId: {ex.Message}");
                 throw;
             }
         }
