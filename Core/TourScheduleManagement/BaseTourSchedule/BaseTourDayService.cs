@@ -30,7 +30,7 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
                 
                 var result = await response.Content.ReadFromJsonAsync<IList<BaseTourScheduleDay>>(_jsonOptions, ct);
                 var count = result?.Count ?? 0;
-                Console.WriteLine($"BaseTourDayService.GetAllByBaseTourScheduleIdAsync: Successfully retrieved {count} BaseTourScheduleDays for BaseTourSchedule {baseTourScheduleId}");
+                Console.WriteLine($"BaseTourDayService.GetAllByBaseTourScheduleIdAsync: Successfully retrieved {count} Days for BaseTourSchedule {baseTourScheduleId}");
                 return result ?? new List<BaseTourScheduleDay>();
             }
             catch (Exception ex)
