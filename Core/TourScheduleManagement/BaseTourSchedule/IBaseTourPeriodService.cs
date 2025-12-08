@@ -4,6 +4,6 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
 {
     public interface IBaseTourPeriodService : ICrudService<BaseTourSchedulePeriod>
     {
-        Task<IList<BaseTourSchedulePeriod>> GetAllByBaseTourDayIdAsync(int baseTourDayId, CancellationToken ct = default);
+        Task<IList<BaseTourSchedulePeriod>> GetAllByBaseTourScheduleIdAsync(int baseTourScheduleId, CancellationToken ct = default);
     }
 }
