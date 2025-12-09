@@ -4,7 +4,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.JobTitle
 {
     public class JobTitleService : CrudService<Domain.Core.HumanResourceManagement.JobTitle.Entity.JobTitle>, IJobTitleService
     {
-        public JobTitleService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/jobtitle")
+        public JobTitleService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/JobTitle")
         {
         }
 
