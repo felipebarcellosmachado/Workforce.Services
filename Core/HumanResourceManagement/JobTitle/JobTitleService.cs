@@ -1,4 +1,7 @@
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Workforce.Services.Core.HumanResourceManagement.JobTitle
 {
@@ -13,9 +16,16 @@ namespace Workforce.Services.Core.HumanResourceManagement.JobTitle
             try
             {
                 var response = await _httpClient.GetAsync($"{_baseUri}/all/environment/{environmentId}");
+
+                Console.WriteLine($"CrudService.GetById: Response status: {response.StatusCode}");
+
                 response.EnsureSuccessStatusCode();
+
+                // Ler como string primeiro para evitar erros de memória com a desserialização direta
+                var jsonString = await response.Content.ReadAsStringAsync();
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.HumanResourceManagement.JobTitle.Entity.JobTitle>>(_jsonOptions);
+                var result = JsonSerializer.Deserialize<IList<Domain.Core.HumanResourceManagement.JobTitle.Entity.JobTitle>>(jsonString, _jsonOptions);
+
                 return result ?? new List<Domain.Core.HumanResourceManagement.JobTitle.Entity.JobTitle>();
             }
             catch (Exception ex)
