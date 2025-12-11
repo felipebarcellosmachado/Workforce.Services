@@ -34,6 +34,11 @@ namespace Workforce.Services.Core.HumanResourceManagement.Availability
             return await _httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.Availability.Entity.Availability>>($"{BaseUrl}/all", ct) ?? new List<Domain.Core.HumanResourceManagement.Availability.Entity.Availability>();
         }
 
+        public async Task<IList<Domain.Core.HumanResourceManagement.Availability.Entity.Availability>> GetByHumanResourceIdAsync(int humanResourceId, CancellationToken ct = default)
+        {
+            return await _httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.Availability.Entity.Availability>>($"{BaseUrl}/humanresource/{humanResourceId}", ct) ?? new List<Domain.Core.HumanResourceManagement.Availability.Entity.Availability>();
+        }
+
         public async Task<Domain.Core.HumanResourceManagement.Availability.Entity.Availability> InsertAsync(Domain.Core.HumanResourceManagement.Availability.Entity.Availability entity, CancellationToken ct = default)
         {
             var response = await _httpClient.PostAsJsonAsync(BaseUrl, entity, ct);
