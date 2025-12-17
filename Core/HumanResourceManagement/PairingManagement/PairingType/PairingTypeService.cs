@@ -125,7 +125,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             {
                 ArgumentNullException.ThrowIfNull(entity);
 
-                Console.WriteLine($"PairingTypeService.InsertAsync: Preparing to send - Id={entity.Id}, EnvironmentId={entity.EnvironmentId}, Name={entity.Name}, Satisfability={entity.Satisfability}");
+                Console.WriteLine($"PairingTypeService.InsertAsync: Preparing to send - Id={entity.Id}, EnvironmentId={entity.EnvironmentId}, Name={entity.Name}");
                 Console.WriteLine($"PairingTypeService.InsertAsync: Making POST request to {baseUri}");
                 
                 var response = await httpClient.PostAsJsonAsync(baseUri, entity, jsonOptions, ct);
