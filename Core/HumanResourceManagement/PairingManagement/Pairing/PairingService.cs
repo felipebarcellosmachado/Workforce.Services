@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Workforce.Domain.Core.HumanResourceManagement.PairingManagement.Pairing.Dto;
 
 namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pairing
 {
@@ -67,6 +68,66 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             catch (Exception ex)
             {
                 Console.WriteLine($"Error in PairingService.GetByEnvironmentIdAndIdAsync: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<IList<PairingListDto>> GetAllListDtoAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"PairingService.GetAllListDtoAsync: Making GET request to {_baseUri}/list/all");
+                
+                var response = await _httpClient.GetAsync($"{_baseUri}/list/all", ct);
+                
+                Console.WriteLine($"PairingService.GetAllListDtoAsync: Response status: {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"PairingService.GetAllListDtoAsync: Error response content: {errorContent}");
+                }
+                
+                response.EnsureSuccessStatusCode();
+                
+                var result = await response.Content.ReadFromJsonAsync<IList<PairingListDto>>(_jsonOptions, ct);
+                var count = result?.Count ?? 0;
+                Console.WriteLine($"PairingService.GetAllListDtoAsync: Successfully retrieved {count} pairings");
+                return result ?? new List<PairingListDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in PairingService.GetAllListDtoAsync: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<IList<PairingListDto>> GetAllListDtoByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"PairingService.GetAllListDtoByEnvironmentIdAsync: Making GET request to {_baseUri}/list/all/environment/{environmentId}");
+                
+                var response = await _httpClient.GetAsync($"{_baseUri}/list/all/environment/{environmentId}", ct);
+                
+                Console.WriteLine($"PairingService.GetAllListDtoByEnvironmentIdAsync: Response status: {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"PairingService.GetAllListDtoByEnvironmentIdAsync: Error response content: {errorContent}");
+                }
+                
+                response.EnsureSuccessStatusCode();
+                
+                var result = await response.Content.ReadFromJsonAsync<IList<PairingListDto>>(_jsonOptions, ct);
+                var count = result?.Count ?? 0;
+                Console.WriteLine($"PairingService.GetAllListDtoByEnvironmentIdAsync: Successfully retrieved {count} pairings for environment {environmentId}");
+                return result ?? new List<PairingListDto>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in PairingService.GetAllListDtoByEnvironmentIdAsync: {ex.Message}");
                 throw;
             }
         }
