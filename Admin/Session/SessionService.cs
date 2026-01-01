@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using Workforce.Domain.Admin.Session.Entity;
-using Workforce.Business.Admin.Session.Dto;
+using Workforce.Realization.Infrastructure.Persistence.Admin.Session.Dto;
 
 namespace Workforce.Services.Admin.Session
 {

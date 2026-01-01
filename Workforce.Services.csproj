@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Workforce.Domain\Workforce.Domain.csproj" />
-    <ProjectReference Include="..\Workforce.Business\Workforce.Business.csproj" />
+    <ProjectReference Include="..\Workforce.Business\Workforce.Realization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
