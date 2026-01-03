@@ -18,6 +18,20 @@ namespace Workforce.Services.Infra.Party
         /// <param name="ct">Cancellation token</param>
         /// <returns>Response with person count</returns>
         Task<CountPersonsResponse> CountPersonsAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Executes the human resources insertion script
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Response with count of inserted human resources</returns>
+        Task<InsertHumanResourcesResponse> InsertHumanResourcesAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Gets the count of human resources in the database
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns>Response with human resources count</returns>
+        Task<CountHumanResourcesResponse> CountHumanResourcesAsync(CancellationToken ct = default);
     }
 
     /// <summary>
@@ -37,5 +51,24 @@ namespace Workforce.Services.Infra.Party
     {
         public bool Success { get; set; }
         public int Persons { get; set; }
+    }
+
+    /// <summary>
+    /// Response for insert human resources operation
+    /// </summary>
+    public class InsertHumanResourcesResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public int Count { get; set; }
+    }
+
+    /// <summary>
+    /// Response for count human resources operation
+    /// </summary>
+    public class CountHumanResourcesResponse
+    {
+        public bool Success { get; set; }
+        public int HumanResources { get; set; }
     }
 }

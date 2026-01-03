@@ -80,5 +80,71 @@ namespace Workforce.Services.Infra.Party
                 throw;
             }
         }
+
+        /// <summary>
+        /// Executes the human resources insertion script
+        /// </summary>
+        public async Task<InsertHumanResourcesResponse> InsertHumanResourcesAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"DataScriptsService.InsertHumanResources: Making POST request to {baseUri}/insert-humanresources");
+
+                var response = await httpClient.PostAsync($"{baseUri}/insert-humanresources", null, ct);
+
+                Console.WriteLine($"DataScriptsService.InsertHumanResources: Response status: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"DataScriptsService.InsertHumanResources: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<InsertHumanResourcesResponse>(ct);
+                Console.WriteLine($"DataScriptsService.InsertHumanResources: Successfully inserted {result?.Count ?? 0} human resources");
+                return result ?? throw new InvalidOperationException("Response returned null");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DataScriptsService.InsertHumanResources: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets the count of human resources in the database
+        /// </summary>
+        public async Task<CountHumanResourcesResponse> CountHumanResourcesAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"DataScriptsService.CountHumanResources: Making GET request to {baseUri}/count-humanresources");
+
+                var response = await httpClient.GetAsync($"{baseUri}/count-humanresources", ct);
+
+                Console.WriteLine($"DataScriptsService.CountHumanResources: Response status: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"DataScriptsService.CountHumanResources: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<CountHumanResourcesResponse>(ct);
+                Console.WriteLine($"DataScriptsService.CountHumanResources: Successfully retrieved count - {result?.HumanResources ?? 0} human resources");
+                return result ?? throw new InvalidOperationException("Response returned null");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DataScriptsService.CountHumanResources: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
