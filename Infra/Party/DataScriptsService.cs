@@ -146,5 +146,71 @@ namespace Workforce.Services.Infra.Party
                 throw;
             }
         }
+
+        /// <summary>
+        /// Executes the work units insertion script
+        /// </summary>
+        public async Task<InsertWorkUnitsResponse> InsertWorkUnitsAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"DataScriptsService.InsertWorkUnits: Making POST request to {baseUri}/insert-workunits");
+
+                var response = await httpClient.PostAsync($"{baseUri}/insert-workunits", null, ct);
+
+                Console.WriteLine($"DataScriptsService.InsertWorkUnits: Response status: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"DataScriptsService.InsertWorkUnits: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<InsertWorkUnitsResponse>(ct);
+                Console.WriteLine($"DataScriptsService.InsertWorkUnits: Successfully inserted {result?.Count ?? 0} work units");
+                return result ?? throw new InvalidOperationException("Response returned null");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DataScriptsService.InsertWorkUnits: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Gets the count of work units in the database
+        /// </summary>
+        public async Task<CountWorkUnitsResponse> CountWorkUnitsAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                Console.WriteLine($"DataScriptsService.CountWorkUnits: Making GET request to {baseUri}/count-workunits");
+
+                var response = await httpClient.GetAsync($"{baseUri}/count-workunits", ct);
+
+                Console.WriteLine($"DataScriptsService.CountWorkUnits: Response status: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
+                    Console.WriteLine($"DataScriptsService.CountWorkUnits: Error response content: {errorContent}");
+                    throw new HttpRequestException($"HTTP Error ({(int)response.StatusCode}): {errorContent}", null, response.StatusCode);
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<CountWorkUnitsResponse>(ct);
+                Console.WriteLine($"DataScriptsService.CountWorkUnits: Successfully retrieved count - {result?.WorkUnits ?? 0} work units");
+                return result ?? throw new InvalidOperationException("Response returned null");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DataScriptsService.CountWorkUnits: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
