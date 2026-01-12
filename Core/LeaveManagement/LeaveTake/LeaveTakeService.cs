@@ -7,7 +7,7 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveTake
     public class LeaveTakeService : CrudService<Domain.Core.LeaveManagement.LeaveTake.Entity.LeaveTake>, ILeaveTakeService
     {
         public LeaveTakeService(HttpClient httpClient) 
-            : base(httpClient, "api/leave-takes")
+            : base(httpClient, "api/core/leave-management/leave-takes")
         {
         }
 
@@ -23,7 +23,7 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveTake
                 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
+                    var errorContent = await response.Content.ReadAsStringAsync(ct);
                     Console.WriteLine($"LeaveTakeService.GetAllByEnvironmentIdAsync: Error response content: {errorContent}");
                 }
                 
