@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Workforce.Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity;
+using Workforce.Domain.Core.TourScheduleManagement.TourScheduleOptimization.Dto;
 
 namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimization
 {
@@ -13,5 +14,6 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization> InsertAsync(Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization entity, CancellationToken ct = default);
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> UpdateAsync(Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization entity, CancellationToken ct = default);
         Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default);
+        Task<IList<TourScheduleAssignment>> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default);
     }
 }

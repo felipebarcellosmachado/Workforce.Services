@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Workforce.Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity;
+using Workforce.Domain.Core.TourScheduleManagement.TourScheduleOptimization.Dto;
 
 namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimization
 {
@@ -60,6 +61,13 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return false;
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        public async Task<IList<TourScheduleAssignment>> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsJsonAsync($"{BaseUrl}/solve", parameters, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<IList<TourScheduleAssignment>>(cancellationToken: ct) ?? new List<TourScheduleAssignment>();
         }
     }
 }
