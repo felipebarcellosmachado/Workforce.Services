@@ -69,5 +69,13 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<IList<TourScheduleAssignment>>(cancellationToken: ct) ?? new List<TourScheduleAssignment>();
         }
+
+        public async Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsync($"{BaseUrl}/{id}/reset-status", null, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>(cancellationToken: ct);
+        }
     }
 }
