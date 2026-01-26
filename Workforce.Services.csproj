@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Core\DemandManagement\" />
     <Folder Include="Core\HumanResourceManagement\WorkingHour\" />
+    <Folder Include="Core\StaffingScheduleManagement\StaffingSchedule\" />
   </ItemGroup>
 
   <PropertyGroup>
