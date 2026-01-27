@@ -14,7 +14,8 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization> InsertAsync(Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization entity, CancellationToken ct = default);
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> UpdateAsync(Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization entity, CancellationToken ct = default);
         Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default);
-        Task<IList<TourScheduleAssignment>> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default);
+        Task<TourScheduleOptimizationJobResponse> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default);
+        Task<TourScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default);
     }
 }

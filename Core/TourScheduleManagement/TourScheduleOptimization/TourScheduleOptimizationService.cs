@@ -63,11 +63,23 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
             return true;
         }
 
-        public async Task<IList<TourScheduleAssignment>> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default)
+        public async Task<TourScheduleOptimizationJobResponse> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default)
         {
             var response = await httpClient.PostAsJsonAsync($"{BaseUrl}/solve", parameters, ct);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<IList<TourScheduleAssignment>>(cancellationToken: ct) ?? new List<TourScheduleAssignment>();
+            return await response.Content.ReadFromJsonAsync<TourScheduleOptimizationJobResponse>(cancellationToken: ct) ?? throw new InvalidOperationException("Failed to deserialize job response");
+        }
+
+        public async Task<TourScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<TourScheduleOptimizationStatusResponse>($"{BaseUrl}/{id}/status", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
         }
 
         public async Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default)
