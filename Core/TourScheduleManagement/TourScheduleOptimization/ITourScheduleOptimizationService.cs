@@ -6,7 +6,7 @@ using Workforce.Domain.Core.TourScheduleManagement.TourScheduleOptimization.Dto;
 
 namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimization
 {
-    public interface ITourScheduleOptimizationService
+    public partial interface ITourScheduleOptimizationService
     {
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> GetByIdAsync(int id, CancellationToken ct = default);
         Task<IList<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>> GetAllAsync(CancellationToken ct = default);

@@ -89,5 +89,17 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>(cancellationToken: ct);
         }
+
+        public async Task<string?> GetResourceUsageDiagnosticsAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<string>($"{BaseUrl}/{id}/diagnostics/resource-usage", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
     }
 }
