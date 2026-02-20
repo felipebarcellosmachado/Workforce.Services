@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Workforce.Domain.Core.HumanResourceManagement.Class.Entity;
+using Workforce.Domain.Core.WorkManagement.Class.Entity;
 
 namespace Workforce.Services.Core.HumanResourceManagement.Class
 {
@@ -17,11 +17,11 @@ namespace Workforce.Services.Core.HumanResourceManagement.Class
             this.httpClient = httpClient;
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.Class.Entity.Class?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.Class.Entity.Class?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<Domain.Core.HumanResourceManagement.Class.Entity.Class>($"{BaseUrl}/{id}", ct);
+                return await httpClient.GetFromJsonAsync<Domain.Core.WorkManagement.Class.Entity.Class>($"{BaseUrl}/{id}", ct);
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -29,29 +29,29 @@ namespace Workforce.Services.Core.HumanResourceManagement.Class
             }
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.Class.Entity.Class>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IList<Domain.Core.WorkManagement.Class.Entity.Class>> GetAllAsync(CancellationToken ct = default)
         {
-            return await httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.Class.Entity.Class>>($"{BaseUrl}/all", ct) ?? new List<Domain.Core.HumanResourceManagement.Class.Entity.Class>();
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.WorkManagement.Class.Entity.Class>>($"{BaseUrl}/all", ct) ?? new List<Domain.Core.WorkManagement.Class.Entity.Class>();
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.Class.Entity.Class>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        public async Task<IList<Domain.Core.WorkManagement.Class.Entity.Class>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
         {
-            return await httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.Class.Entity.Class>>($"{BaseUrl}/all/environment/{environmentId}", ct) ?? new List<Domain.Core.HumanResourceManagement.Class.Entity.Class>();
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.WorkManagement.Class.Entity.Class>>($"{BaseUrl}/all/environment/{environmentId}", ct) ?? new List<Domain.Core.WorkManagement.Class.Entity.Class>();
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.Class.Entity.Class> InsertAsync(Domain.Core.HumanResourceManagement.Class.Entity.Class entity, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.Class.Entity.Class> InsertAsync(Domain.Core.WorkManagement.Class.Entity.Class entity, CancellationToken ct = default)
         {
             var response = await httpClient.PostAsJsonAsync(BaseUrl, entity, ct);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.Class.Entity.Class>(cancellationToken: ct);
+            return await response.Content.ReadFromJsonAsync<Domain.Core.WorkManagement.Class.Entity.Class>(cancellationToken: ct);
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.Class.Entity.Class?> UpdateAsync(Domain.Core.HumanResourceManagement.Class.Entity.Class entity, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.Class.Entity.Class?> UpdateAsync(Domain.Core.WorkManagement.Class.Entity.Class entity, CancellationToken ct = default)
         {
             var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{entity.Id}", entity, ct);
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.Class.Entity.Class>(cancellationToken: ct);
+            return await response.Content.ReadFromJsonAsync<Domain.Core.WorkManagement.Class.Entity.Class>(cancellationToken: ct);
         }
 
         public async Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default)

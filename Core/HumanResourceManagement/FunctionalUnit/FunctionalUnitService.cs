@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Workforce.Domain.Core.HumanResourceManagement.FunctionalUnit.Entity;
+using Workforce.Domain.Core.WorkManagement.FunctionalUnit.Entity;
 
 namespace Workforce.Services.Core.HumanResourceManagement.FunctionalUnit
 {
@@ -17,11 +17,11 @@ namespace Workforce.Services.Core.HumanResourceManagement.FunctionalUnit
             this.httpClient = httpClient;
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>($"{BaseUrl}/{id}", ct);
+                return await httpClient.GetFromJsonAsync<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>($"{BaseUrl}/{id}", ct);
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -29,29 +29,29 @@ namespace Workforce.Services.Core.HumanResourceManagement.FunctionalUnit
             }
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IList<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>> GetAllAsync(CancellationToken ct = default)
         {
-            return await httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>>($"{BaseUrl}/all", ct) ?? new List<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>();
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>>($"{BaseUrl}/all", ct) ?? new List<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>();
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        public async Task<IList<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
         {
-            return await httpClient.GetFromJsonAsync<IList<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>>($"{BaseUrl}/all/environment/{environmentId}", ct) ?? new List<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>();
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>>($"{BaseUrl}/all/environment/{environmentId}", ct) ?? new List<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>();
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit> InsertAsync(Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit entity, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit> InsertAsync(Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit entity, CancellationToken ct = default)
         {
             var response = await httpClient.PostAsJsonAsync(BaseUrl, entity, ct);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>(cancellationToken: ct);
+            return await response.Content.ReadFromJsonAsync<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>(cancellationToken: ct);
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit?> UpdateAsync(Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit entity, CancellationToken ct = default)
+        public async Task<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit?> UpdateAsync(Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit entity, CancellationToken ct = default)
         {
             var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{entity.Id}", entity, ct);
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.FunctionalUnit.Entity.FunctionalUnit>(cancellationToken: ct);
+            return await response.Content.ReadFromJsonAsync<Domain.Core.WorkManagement.FunctionalUnit.Entity.FunctionalUnit>(cancellationToken: ct);
         }
 
         public async Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default)

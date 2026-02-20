@@ -1,4 +1,4 @@
-﻿namespace Workforce.Services
+namespace Workforce.Services
 {
     public interface ICrudService<T>
     {

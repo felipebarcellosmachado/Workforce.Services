@@ -2,13 +2,13 @@ using System.Net.Http.Json;
 
 namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
 {
-    public class WorkAgreementService : CrudService<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>, IWorkAgreementService
+    public class WorkAgreementService : CrudService<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>, IWorkAgreementService
     {
         public WorkAgreementService(HttpClient httpClient) : base(httpClient, "api/core/human_resource/WorkAgreement")
         {
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement> GetByEnvironmentIdAndId(int environmentId, int id)
+        public async Task<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement> GetByEnvironmentIdAndId(int environmentId, int id)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
                     return null!;
                 }
                 
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>(_jsonOptions);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>(_jsonOptions);
                 return result!;
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
             }
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>> GetAllByEnvironmentId(int environmentId)
+        public async Task<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>> GetAllByEnvironmentId(int environmentId)
         {
             try
             {
@@ -48,18 +48,18 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Error response: {errorContent}");
-                    return new List<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>();
+                    return new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
                 }
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>>(_jsonOptions);
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>>(_jsonOptions);
                 Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Loaded {result?.Count ?? 0} items");
-                return result ?? new List<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>();
+                return result ?? new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error in WorkAgreementService.GetAllByEnvironmentId: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return new List<Domain.Core.HumanResourceManagement.WorkAgreement.Entity.WorkAgreement>();
+                return new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
             }
         }
     }
