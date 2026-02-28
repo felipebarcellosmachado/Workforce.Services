@@ -6,7 +6,6 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.BaseStaffingSchedul
     {
         Task<IList<BaseStaffingScheduleResource>> GetAllByBaseStaffingScheduleIdAsync(int baseStaffingScheduleId, CancellationToken ct = default);
         Task<IList<BaseStaffingScheduleResource>> InsertBatchAsync(IList<BaseStaffingScheduleResource> entities, CancellationToken ct = default);
-        Task<IList<BaseStaffingScheduleResource>> GenerateAsync(ResourceGenerationOptions options, CancellationToken ct = default);
         Task DeleteAllByBaseStaffingScheduleIdAsync(int baseStaffingScheduleId, CancellationToken ct = default);
     }
 }

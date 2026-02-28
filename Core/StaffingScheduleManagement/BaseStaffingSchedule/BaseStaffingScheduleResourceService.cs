@@ -69,24 +69,5 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.BaseStaffingSchedul
                 throw;
             }
         }
-
-        public async Task<IList<BaseStaffingScheduleResource>> GenerateAsync(ResourceGenerationOptions options, CancellationToken ct = default)
-        {
-            try
-            {
-                ArgumentNullException.ThrowIfNull(options);
-
-                var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/generate", options, _jsonOptions, ct);
-                response.EnsureSuccessStatusCode();
-
-                var result = await response.Content.ReadFromJsonAsync<IList<BaseStaffingScheduleResource>>(_jsonOptions, ct);
-                return result ?? new List<BaseStaffingScheduleResource>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in BaseStaffingScheduleResourceService.GenerateAsync: {ex.Message}");
-                throw;
-            }
-        }
     }
 }
