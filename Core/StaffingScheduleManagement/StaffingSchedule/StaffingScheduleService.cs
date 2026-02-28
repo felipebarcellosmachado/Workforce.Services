@@ -52,29 +52,100 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
                 if (id <= 0) throw new ArgumentException("ID must be greater than zero", nameof(id));
                 if (environmentId <= 0) throw new ArgumentException("EnvironmentId must be greater than zero", nameof(environmentId));
 
-                Console.WriteLine($"StaffingScheduleService.GetByEnvironmentIdAndIdAsync: Making GET request to {_baseUri}/environment/{environmentId}/{id}");
-
                 var response = await _httpClient.GetAsync($"{_baseUri}/environment/{environmentId}/{id}", ct);
 
-                Console.WriteLine($"StaffingScheduleService.GetByEnvironmentIdAndIdAsync: Response status: {response.StatusCode}");
-
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    Console.WriteLine($"StaffingScheduleService.GetByEnvironmentIdAndIdAsync: StaffingSchedule with ID {id} not found for environment {environmentId}");
                     return null;
-                }
 
                 response.EnsureSuccessStatusCode();
-
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.StaffingScheduleManagement.StaffingSchedule.Entity.StaffingSchedule>(_jsonOptions, ct);
-                Console.WriteLine($"StaffingScheduleService.GetByEnvironmentIdAndIdAsync: Successfully retrieved StaffingSchedule {id} for environment {environmentId}");
-                return result;
+                return await response.Content.ReadFromJsonAsync<Domain.Core.StaffingScheduleManagement.StaffingSchedule.Entity.StaffingSchedule>(_jsonOptions, ct);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error in StaffingScheduleService.GetByEnvironmentIdAndIdAsync: {ex.Message}");
                 throw;
             }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Period
+        // ─────────────────────────────────────────────────────────────────────
+
+        public async Task<StaffingSchedulePeriod> InsertPeriodAsync(StaffingSchedulePeriod period, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/period", period, _jsonOptions, ct);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<StaffingSchedulePeriod>(_jsonOptions, ct))!;
+        }
+
+        public async Task<StaffingSchedulePeriod?> UpdatePeriodAsync(StaffingSchedulePeriod period, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/period/{period.Id}", period, _jsonOptions, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<StaffingSchedulePeriod>(_jsonOptions, ct);
+        }
+
+        public async Task DeletePeriodAsync(int id, CancellationToken ct = default)
+        {
+            var response = await _httpClient.DeleteAsync($"{_baseUri}/period/{id}", ct);
+            response.EnsureSuccessStatusCode();
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Demand
+        // ─────────────────────────────────────────────────────────────────────
+
+        public async Task<StaffingScheduleDemand> InsertDemandAsync(StaffingScheduleDemand demand, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/demand", demand, _jsonOptions, ct);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<StaffingScheduleDemand>(_jsonOptions, ct))!;
+        }
+
+        public async Task<StaffingScheduleDemand?> UpdateDemandAsync(StaffingScheduleDemand demand, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/demand/{demand.Id}", demand, _jsonOptions, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<StaffingScheduleDemand>(_jsonOptions, ct);
+        }
+
+        public async Task DeleteDemandAsync(int id, CancellationToken ct = default)
+        {
+            var response = await _httpClient.DeleteAsync($"{_baseUri}/demand/{id}", ct);
+            response.EnsureSuccessStatusCode();
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Resource
+        // ─────────────────────────────────────────────────────────────────────
+
+        public async Task<StaffingScheduleResource> InsertResourceAsync(StaffingScheduleResource resource, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/resource", resource, _jsonOptions, ct);
+            response.EnsureSuccessStatusCode();
+            return (await response.Content.ReadFromJsonAsync<StaffingScheduleResource>(_jsonOptions, ct))!;
+        }
+
+        public async Task<StaffingScheduleResource?> UpdateResourceAsync(StaffingScheduleResource resource, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/resource/{resource.Id}", resource, _jsonOptions, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<StaffingScheduleResource>(_jsonOptions, ct);
+        }
+
+        public async Task DeleteResourceAsync(int id, CancellationToken ct = default)
+        {
+            var response = await _httpClient.DeleteAsync($"{_baseUri}/resource/{id}", ct);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteAllResourcesAsync(int staffingScheduleId, CancellationToken ct = default)
+        {
+            var response = await _httpClient.DeleteAsync($"{_baseUri}/{staffingScheduleId}/resources", ct);
+            response.EnsureSuccessStatusCode();
         }
     }
 }
