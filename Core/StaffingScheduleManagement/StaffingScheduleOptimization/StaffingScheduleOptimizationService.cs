@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Workforce.Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Dto;
 using Workforce.Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity;
 
 namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOptimization
@@ -63,6 +64,34 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return false;
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        public async Task<StaffingScheduleOptimizationJobResponse> SolveOptimizationAsync(StaffingScheduleOptimizationParameters parameters, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsJsonAsync($"{BaseUrl}/solve", parameters, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<StaffingScheduleOptimizationJobResponse>(cancellationToken: ct)
+                ?? throw new InvalidOperationException("Failed to deserialize job response");
+        }
+
+        public async Task<StaffingScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<StaffingScheduleOptimizationStatusResponse>($"{BaseUrl}/{id}/status", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsync($"{BaseUrl}/{id}/reset-status", null, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>(cancellationToken: ct);
         }
     }
 }

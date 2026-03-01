@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Workforce.Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Dto;
 using Workforce.Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity;
 
 namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOptimization
@@ -13,5 +14,8 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization> InsertAsync(Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization entity, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> UpdateAsync(Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization entity, CancellationToken ct = default);
         Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default);
+        Task<StaffingScheduleOptimizationJobResponse> SolveOptimizationAsync(StaffingScheduleOptimizationParameters parameters, CancellationToken ct = default);
+        Task<StaffingScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default);
+        Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default);
     }
 }
