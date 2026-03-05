@@ -5,5 +5,6 @@ namespace Workforce.Services.Core.ProjectManagement.Activity
     public interface IActivityService : ICrudService<Domain.Core.ProjectManagement.Activity.Entity.Activity>
     {
         Task<IList<Domain.Core.ProjectManagement.Activity.Entity.Activity>> GetAllByProjectIdAsync(int projectId, CancellationToken ct = default);
+        Task UpdatePredecessorsAsync(int activityId, IList<int> predecessorIds, CancellationToken ct = default);
     }
 }
