@@ -10,6 +10,7 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
         Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> GetByIdAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> GetByIdForDashboardAsync(int id, CancellationToken ct = default);
         Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllAsync(CancellationToken ct = default);
+        Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default);
         Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllByProjectIdAsync(int projectId, CancellationToken ct = default);
         Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization> InsertAsync(Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization entity, CancellationToken ct = default);
         Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> UpdateAsync(Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization entity, CancellationToken ct = default);

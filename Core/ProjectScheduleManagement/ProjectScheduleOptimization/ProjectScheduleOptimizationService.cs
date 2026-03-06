@@ -48,6 +48,12 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
                 ?? new List<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>();
         }
 
+        public async Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        {
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>>($"{BaseUrl}/all/environment/{environmentId}", ct)
+                ?? new List<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>();
+        }
+
         public async Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllByProjectIdAsync(int projectId, CancellationToken ct = default)
         {
             return await httpClient.GetFromJsonAsync<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>>($"{BaseUrl}/all/project/{projectId}", ct)
