@@ -30,6 +30,18 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
             }
         }
 
+        public async Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> GetByIdForDashboardAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>($"{BaseUrl}/{id}/dashboard", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
         public async Task<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>> GetAllAsync(CancellationToken ct = default)
         {
             return await httpClient.GetFromJsonAsync<IList<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>>($"{BaseUrl}/all", ct)
