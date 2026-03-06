@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Workforce.Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Dto;
 
 namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptimization
 {
@@ -67,6 +68,36 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return false;
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        public async Task<ProjectScheduleOptimizationJobResponse> SolveOptimizationAsync(
+            ProjectScheduleOptimizationParameters parameters,
+            CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsJsonAsync($"{BaseUrl}/solve", parameters, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<ProjectScheduleOptimizationJobResponse>(cancellationToken: ct)
+                ?? throw new InvalidOperationException("Failed to deserialize job response");
+        }
+
+        public async Task<ProjectScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<ProjectScheduleOptimizationStatusResponse>($"{BaseUrl}/{id}/status", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsync($"{BaseUrl}/{id}/reset-status", null, ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>(cancellationToken: ct);
         }
     }
 }
