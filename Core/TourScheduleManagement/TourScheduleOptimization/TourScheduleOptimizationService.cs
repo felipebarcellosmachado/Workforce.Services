@@ -101,5 +101,11 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
                 return null;
             }
         }
+
+        public async Task SaveOptionsAsync(int optimizationId, TourScheduleOptimizationOptions options, CancellationToken ct = default)
+        {
+            var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{optimizationId}/options", options, ct);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

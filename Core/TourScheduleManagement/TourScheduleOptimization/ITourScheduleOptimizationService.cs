@@ -17,5 +17,10 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
         Task<TourScheduleOptimizationJobResponse> SolveOptimizationAsync(TourScheduleOptimizationParameters parameters, CancellationToken ct = default);
         Task<TourScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default);
+
+        /// <summary>
+        /// Persiste as opções do solver para a otimização especificada.
+        /// </summary>
+        Task SaveOptionsAsync(int optimizationId, TourScheduleOptimizationOptions options, CancellationToken ct = default);
     }
 }
