@@ -17,5 +17,10 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
         Task<StaffingScheduleOptimizationJobResponse> SolveOptimizationAsync(StaffingScheduleOptimizationParameters parameters, CancellationToken ct = default);
         Task<StaffingScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default);
+
+        /// <summary>
+        /// Persiste as opções do solver para a otimização especificada.
+        /// </summary>
+        Task SaveOptionsAsync(int optimizationId, StaffingScheduleOptimizationOptions options, CancellationToken ct = default);
     }
 }

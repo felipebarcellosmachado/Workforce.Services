@@ -93,5 +93,11 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>(cancellationToken: ct);
         }
+
+        public async Task SaveOptionsAsync(int optimizationId, StaffingScheduleOptimizationOptions options, CancellationToken ct = default)
+        {
+            var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{optimizationId}/options", options, ct);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
