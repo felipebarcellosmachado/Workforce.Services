@@ -18,6 +18,10 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
         Task<ProjectScheduleOptimizationJobResponse> SolveOptimizationAsync(ProjectScheduleOptimizationParameters parameters, CancellationToken ct = default);
         Task<ProjectScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization?> ResetStatusAsync(int id, CancellationToken ct = default);
+
+        /// <summary>
+        /// Persiste as opções do solver para a otimização especificada.
+        /// </summary>
+        Task SaveOptionsAsync(int optimizationId, ProjectScheduleOptimizationOptions options, CancellationToken ct = default);
     }
 }
-

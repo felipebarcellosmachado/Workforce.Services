@@ -117,5 +117,11 @@ namespace Workforce.Services.Core.ProjectScheduleManagement.ProjectScheduleOptim
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<Domain.Core.ProjectScheduleManagement.ProjectScheduleOptimization.Entity.ProjectScheduleOptimization>(cancellationToken: ct);
         }
+
+        public async Task SaveOptionsAsync(int optimizationId, ProjectScheduleOptimizationOptions options, CancellationToken ct = default)
+        {
+            var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{optimizationId}/options", options, ct);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
