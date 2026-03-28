@@ -28,7 +28,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             };
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>> GetAllAsync(CancellationToken ct = default)
+        public async Task<IList<Domain.Core.PairingManagement.PairingType.Entity.PairingType>> GetAllAsync(CancellationToken ct = default)
         {
             try
             {
@@ -46,10 +46,10 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
                 
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>>(jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.PairingManagement.PairingType.Entity.PairingType>>(jsonOptions, ct);
                 var count = result?.Count ?? 0;
                 Console.WriteLine($"PairingTypeService.GetAllAsync: Successfully retrieved {count} pairing types");
-                return result ?? new List<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>();
+                return result ?? new List<Domain.Core.PairingManagement.PairingType.Entity.PairingType>();
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             }
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        public async Task<IList<Domain.Core.PairingManagement.PairingType.Entity.PairingType>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
         {
             try
             {
@@ -76,10 +76,10 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
                 
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>>(jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.PairingManagement.PairingType.Entity.PairingType>>(jsonOptions, ct);
                 var count = result?.Count ?? 0;
                 Console.WriteLine($"PairingTypeService.GetAllByEnvironmentIdAsync: Successfully retrieved {count} pairing types for environment {environmentId}");
-                return result ?? new List<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>();
+                return result ?? new List<Domain.Core.PairingManagement.PairingType.Entity.PairingType>();
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             }
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<Domain.Core.PairingManagement.PairingType.Entity.PairingType?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
                     
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
                 Console.WriteLine($"PairingTypeService.GetByIdAsync: Successfully retrieved pairing type {id}");
                 return result;
             }
@@ -119,7 +119,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             }
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType> InsertAsync(Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType entity, CancellationToken ct = default)
+        public async Task<Domain.Core.PairingManagement.PairingType.Entity.PairingType> InsertAsync(Domain.Core.PairingManagement.PairingType.Entity.PairingType entity, CancellationToken ct = default)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
 
                 response.EnsureSuccessStatusCode();
 
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
                 Console.WriteLine($"PairingTypeService.InsertAsync: Successfully created pairing type");
                 return result ?? throw new InvalidOperationException("Response returned null");
             }
@@ -151,7 +151,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             }
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType?> UpdateAsync(Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType entity, CancellationToken ct = default)
+        public async Task<Domain.Core.PairingManagement.PairingType.Entity.PairingType?> UpdateAsync(Domain.Core.PairingManagement.PairingType.Entity.PairingType entity, CancellationToken ct = default)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
 
                 response.EnsureSuccessStatusCode();
 
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.PairingManagement.PairingType.Entity.PairingType>(jsonOptions, ct);
                 Console.WriteLine($"PairingTypeService.UpdateAsync: Successfully updated pairing type {entity.Id}");
                 return result;
             }

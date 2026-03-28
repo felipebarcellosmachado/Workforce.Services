@@ -1,16 +1,16 @@
 using System.Net.Http.Json;
-using Workforce.Domain.Core.HumanResourceManagement.PairingManagement.Pairing.Dto;
+using Workforce.Domain.Core.PairingManagement.Pairing.Dto;
 
 namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pairing
 {
-    public class PairingService : CrudService<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing>, IPairingService
+    public class PairingService : CrudService<Domain.Core.PairingManagement.Pairing.Entity.Pairing>, IPairingService
     {
         public PairingService(HttpClient httpClient) 
             : base(httpClient, "api/core/human_resource_management/pairing_management/pairing")
         {
         }
 
-        public async Task<IList<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
+        public async Task<IList<Domain.Core.PairingManagement.Pairing.Entity.Pairing>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
         {
             try
             {
@@ -28,10 +28,10 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
                 
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing>>(_jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.PairingManagement.Pairing.Entity.Pairing>>(_jsonOptions, ct);
                 var count = result?.Count ?? 0;
                 Console.WriteLine($"PairingService.GetAllByEnvironmentIdAsync: Successfully retrieved {count} pairings for environment {environmentId}");
-                return result ?? new List<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing>();
+                return result ?? new List<Domain.Core.PairingManagement.Pairing.Entity.Pairing>();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
             }
         }
 
-        public async Task<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
+        public async Task<Domain.Core.PairingManagement.Pairing.Entity.Pairing?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.PairingManagement.Pair
                     
                 response.EnsureSuccessStatusCode();
                 
-                var result = await response.Content.ReadFromJsonAsync<Domain.Core.HumanResourceManagement.Pairing.Pairing.Entity.Pairing>(_jsonOptions, ct);
+                var result = await response.Content.ReadFromJsonAsync<Domain.Core.PairingManagement.Pairing.Entity.Pairing>(_jsonOptions, ct);
                 Console.WriteLine($"PairingService.GetByEnvironmentIdAndIdAsync: Successfully retrieved pairing {id} for environment {environmentId}");
                 return result;
             }
