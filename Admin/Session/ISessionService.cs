@@ -4,7 +4,7 @@ using Workforce.Realization.Infrastructure.Persistence.Admin.Session.Dto;
 namespace Workforce.Services.Admin.Session
 {
     /// <summary>
-    /// Interface for Session service operations
+    /// Interface for Session service operations 
     /// </summary>
     public interface ISessionService : ICrudService<Domain.Admin.Session.Entity.Session>
     {
