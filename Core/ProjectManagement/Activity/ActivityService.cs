@@ -21,5 +21,15 @@ namespace Workforce.Services.Core.ProjectManagement.Activity
             var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/{activityId}/predecessors", predecessorIds, _jsonOptions, ct);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task UpdateDatesAsync(int activityId, DateTime? startDate, DateTime? endDate, CancellationToken ct = default)
+        {
+            var response = await _httpClient.PutAsJsonAsync(
+                $"{_baseUri}/{activityId}/dates",
+                new { startDate, endDate },
+                _jsonOptions,
+                ct);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
