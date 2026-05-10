@@ -67,9 +67,9 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
             }
         }
 
-        // ─────────────────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         // Period
-        // ─────────────────────────────────────────────────────────────────────
+        // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
         public async Task<StaffingSchedulePeriod> InsertPeriodAsync(StaffingSchedulePeriod period, CancellationToken ct = default)
         {
@@ -92,9 +92,9 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
             response.EnsureSuccessStatusCode();
         }
 
-        // ─────────────────────────────────────────────────────────────────────
+        // ---------------------------------------------------------------------
         // Demand
-        // ─────────────────────────────────────────────────────────────────────
+        // ---------------------------------------------------------------------
 
         public async Task<StaffingScheduleDemand> InsertDemandAsync(StaffingScheduleDemand demand, CancellationToken ct = default)
         {
@@ -117,9 +117,9 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
             response.EnsureSuccessStatusCode();
         }
 
-        // ─────────────────────────────────────────────────────────────────────
+        // ---------------------------------------------------------------------
         // Resource
-        // ─────────────────────────────────────────────────────────────────────
+        // ---------------------------------------------------------------------
 
         public async Task<StaffingScheduleResource> InsertResourceAsync(StaffingScheduleResource resource, CancellationToken ct = default)
         {

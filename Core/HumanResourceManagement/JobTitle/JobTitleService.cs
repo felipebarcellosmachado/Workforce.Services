@@ -21,7 +21,7 @@ namespace Workforce.Services.Core.HumanResourceManagement.JobTitle
 
                 response.EnsureSuccessStatusCode();
 
-                // Ler como string primeiro para evitar erros de memória com a desserialização direta
+                // Ler como string primeiro para evitar erros de memÃ³ria com a desserializaÃ§Ã£o direta
                 var jsonString = await response.Content.ReadAsStringAsync();
                 
                 var result = JsonSerializer.Deserialize<IList<Domain.Core.HumanResourceManagement.JobTitle.Entity.JobTitle>>(jsonString, _jsonOptions);
