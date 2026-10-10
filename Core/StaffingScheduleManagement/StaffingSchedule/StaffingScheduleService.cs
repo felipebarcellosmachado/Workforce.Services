@@ -74,7 +74,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         public async Task<StaffingSchedulePeriod> InsertPeriodAsync(StaffingSchedulePeriod period, CancellationToken ct = default)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/period", period, _jsonOptions, ct);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithServerMessageAsync(response, ct);
             return (await response.Content.ReadFromJsonAsync<StaffingSchedulePeriod>(_jsonOptions, ct))!;
         }
 
@@ -99,7 +99,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         public async Task<StaffingScheduleDemand> InsertDemandAsync(StaffingScheduleDemand demand, CancellationToken ct = default)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/demand", demand, _jsonOptions, ct);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithServerMessageAsync(response, ct);
             return (await response.Content.ReadFromJsonAsync<StaffingScheduleDemand>(_jsonOptions, ct))!;
         }
 
@@ -124,7 +124,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         public async Task<StaffingScheduleResource> InsertResourceAsync(StaffingScheduleResource resource, CancellationToken ct = default)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUri}/resource", resource, _jsonOptions, ct);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithServerMessageAsync(response, ct);
             return (await response.Content.ReadFromJsonAsync<StaffingScheduleResource>(_jsonOptions, ct))!;
         }
 
@@ -132,7 +132,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         {
             var response = await _httpClient.PutAsJsonAsync($"{_baseUri}/resource/{resource.Id}", resource, _jsonOptions, ct);
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithServerMessageAsync(response, ct);
             return await response.Content.ReadFromJsonAsync<StaffingScheduleResource>(_jsonOptions, ct);
         }
 
@@ -145,7 +145,21 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         public async Task DeleteAllResourcesAsync(int staffingScheduleId, CancellationToken ct = default)
         {
             var response = await _httpClient.DeleteAsync($"{_baseUri}/{staffingScheduleId}/resources", ct);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithServerMessageAsync(response, ct);
+        }
+
+        private static async Task EnsureSuccessWithServerMessageAsync(HttpResponseMessage response, CancellationToken ct)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            var serverMessage = await response.Content.ReadAsStringAsync(ct);
+            throw new HttpRequestException(
+                $"Falha na requisição ({(int)response.StatusCode} {response.StatusCode}): {serverMessage}",
+                null,
+                response.StatusCode);
         }
     }
 }
