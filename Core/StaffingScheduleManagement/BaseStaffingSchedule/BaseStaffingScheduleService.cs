@@ -76,5 +76,16 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.BaseStaffingSchedul
                 throw;
             }
         }
+
+        public async Task<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule> CloneAsync(int id, CancellationToken ct = default)
+        {
+            if (id <= 0) throw new ArgumentException("ID must be greater than zero", nameof(id));
+
+            var response = await _httpClient.PostAsync($"{_baseUri}/{id}/clone", null, ct);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>(_jsonOptions, ct);
+            return result ?? throw new InvalidOperationException($"Resposta vazia ao clonar BaseStaffingSchedule {id}");
+        }
     }
 }
