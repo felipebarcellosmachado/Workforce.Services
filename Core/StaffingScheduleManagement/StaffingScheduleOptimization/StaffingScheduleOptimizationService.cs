@@ -99,5 +99,19 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
             var response = await httpClient.PutAsJsonAsync($"{BaseUrl}/{optimizationId}/options", options, ct);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task<StaffingScheduleComparisonResult> CompareAsync(int optimizationAId, int optimizationBId, CancellationToken ct = default)
+        {
+            return await httpClient.GetFromJsonAsync<StaffingScheduleComparisonResult>($"{BaseUrl}/compare/{optimizationAId}/{optimizationBId}", ct)
+                ?? throw new InvalidOperationException("Failed to deserialize comparison result");
+        }
+
+        public async Task<StaffingScheduleComparisonNarrativeResponse> GetComparisonNarrativeAsync(StaffingScheduleComparisonResult comparison, CancellationToken ct = default)
+        {
+            var response = await httpClient.PostAsJsonAsync($"{BaseUrl}/compare/narrative", new StaffingScheduleComparisonNarrativeRequest { Comparison = comparison }, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<StaffingScheduleComparisonNarrativeResponse>(cancellationToken: ct)
+                ?? throw new InvalidOperationException("Failed to deserialize narrative response");
+        }
     }
 }

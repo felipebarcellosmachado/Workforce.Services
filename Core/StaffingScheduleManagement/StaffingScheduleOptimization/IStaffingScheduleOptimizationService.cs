@@ -22,5 +22,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
         /// Persiste as opções do solver para a otimização especificada.
         /// </summary>
         Task SaveOptionsAsync(int optimizationId, StaffingScheduleOptimizationOptions options, CancellationToken ct = default);
+        Task<StaffingScheduleComparisonResult> CompareAsync(int optimizationAId, int optimizationBId, CancellationToken ct = default);
+        Task<StaffingScheduleComparisonNarrativeResponse> GetComparisonNarrativeAsync(StaffingScheduleComparisonResult comparison, CancellationToken ct = default);
     }
 }
