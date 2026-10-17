@@ -1,6 +1,7 @@
 using Workforce.Services;
 using Workforce.Domain.Core.LeaveManagement.LeaveRequest.Entity;
 using System.Net.Http.Json;
+using Workforce.Domain.Core.LeaveManagement.LeaveRequest.Enum;
 
 namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
 {
@@ -9,6 +10,23 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
         public LeaveRequestService(HttpClient httpClient) 
             : base(httpClient, "api/core/leave-management/leave-requests")
         {
+        }
+
+        public Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> ApproveAsync(int id, CancellationToken ct = default) =>
+            UpdateStatusAsync(id, "approve", ct);
+
+        public Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> RejectAsync(int id, CancellationToken ct = default) =>
+            UpdateStatusAsync(id, "reject", ct);
+
+        public Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> CancelAsync(int id, CancellationToken ct = default) =>
+            UpdateStatusAsync(id, "cancel", ct);
+
+        private async Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> UpdateStatusAsync(int id, string action, CancellationToken ct)
+        {
+            using var response = await _httpClient.PostAsync($"{_baseUri}/{id}/{action}", content: null, ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest>(_jsonOptions, ct)
+                ?? throw new InvalidOperationException("A API retornou uma solicitação de licença vazia.");
         }
 
         public async Task<IList<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default)
