@@ -21,6 +21,9 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
         public Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> CancelAsync(int id, CancellationToken ct = default) =>
             UpdateStatusAsync(id, "cancel", ct);
 
+        public Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> ReopenAsync(int id, CancellationToken ct = default) =>
+            UpdateStatusAsync(id, "reopen", ct);
+
         private async Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> UpdateStatusAsync(int id, string action, CancellationToken ct)
         {
             using var response = await _httpClient.PostAsync($"{_baseUri}/{id}/{action}", content: null, ct);

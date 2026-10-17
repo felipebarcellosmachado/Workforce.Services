@@ -10,5 +10,6 @@ namespace Workforce.Services.Core.LeaveManagement.LeaveRequest
         Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> ApproveAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> RejectAsync(int id, CancellationToken ct = default);
         Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> CancelAsync(int id, CancellationToken ct = default);
+        Task<Domain.Core.LeaveManagement.LeaveRequest.Entity.LeaveRequest> ReopenAsync(int id, CancellationToken ct = default);
     }
 }
