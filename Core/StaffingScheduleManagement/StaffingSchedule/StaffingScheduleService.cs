@@ -139,6 +139,11 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingSchedule
         public async Task DeleteResourceAsync(int id, CancellationToken ct = default)
         {
             var response = await _httpClient.DeleteAsync($"{_baseUri}/resource/{id}", ct);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return;
+            }
+
             response.EnsureSuccessStatusCode();
         }
 
