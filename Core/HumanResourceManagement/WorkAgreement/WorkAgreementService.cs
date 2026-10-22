@@ -41,16 +41,16 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
             {
                 Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Requesting {_baseUri}/all/environment/{environmentId}");
                 var response = await _httpClient.GetAsync($"{_baseUri}/all/environment/{environmentId}");
-                
+
                 Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Response status: {response.StatusCode}");
-                
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Error response: {errorContent}");
                     return new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
                 }
-                
+
                 var result = await response.Content.ReadFromJsonAsync<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>>(_jsonOptions);
                 Console.WriteLine($"WorkAgreementService.GetAllByEnvironmentId: Loaded {result?.Count ?? 0} items");
                 return result ?? new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
@@ -61,6 +61,26 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return new List<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>();
             }
+        }
+
+        public async Task<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>> GetAllOpenByEnvironmentIdAsync(
+            int environmentId,
+            int? contextId,
+            CancellationToken ct = default)
+        {
+            if (environmentId <= 0)
+            {
+                throw new ArgumentException("Environment ID deve ser maior que zero.", nameof(environmentId));
+            }
+
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            using var response = await _httpClient.GetAsync(
+                $"{_baseUri}/all/environment/{environmentId}/open-contexts{contextQuery}",
+                ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>>(_jsonOptions, ct)
+                ?? throw new InvalidDataException("The WorkAgreement API returned an empty list response.");
         }
     }
 }

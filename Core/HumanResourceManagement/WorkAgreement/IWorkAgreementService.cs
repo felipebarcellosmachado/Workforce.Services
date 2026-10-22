@@ -4,5 +4,6 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkAgreement
     {
         Task<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement> GetByEnvironmentIdAndId(int environmentId, int id);
         Task<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>> GetAllByEnvironmentId(int environmentId);
+        Task<IList<Domain.Core.WorkManagement.WorkAgreement.Entity.WorkAgreement>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default);
     }
 }
