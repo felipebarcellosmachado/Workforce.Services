@@ -7,5 +7,6 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkingTime
     {
         Task<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime> GetByEnvironmentIdAndId(int environmentId, int id);
         Task<IList<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime>> GetAllByEnvironmentId(int environmentId);
+        Task<IList<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default);
     }
 }

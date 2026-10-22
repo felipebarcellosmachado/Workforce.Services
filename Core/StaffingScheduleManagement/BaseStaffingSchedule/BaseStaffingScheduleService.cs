@@ -45,6 +45,23 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.BaseStaffingSchedul
             }
         }
 
+        public async Task<IList<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default)
+        {
+            if (environmentId <= 0)
+            {
+                throw new ArgumentException("Environment ID deve ser maior que zero.", nameof(environmentId));
+            }
+
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            using var response = await _httpClient.GetAsync(
+                $"{_baseUri}/all/environment/{environmentId}/open-contexts{contextQuery}",
+                ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<IList<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>>(_jsonOptions, ct)
+                ?? new List<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>();
+        }
+
         public async Task<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
         {
             try

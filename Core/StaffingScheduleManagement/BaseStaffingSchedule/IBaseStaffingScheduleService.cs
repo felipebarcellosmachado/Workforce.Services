@@ -5,6 +5,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.BaseStaffingSchedul
     public interface IBaseStaffingScheduleService : ICrudService<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>
     {
         Task<IList<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default);
+        Task<IList<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.BaseStaffingSchedule.Entity.BaseStaffingSchedule> CloneAsync(int id, CancellationToken ct = default);
     }

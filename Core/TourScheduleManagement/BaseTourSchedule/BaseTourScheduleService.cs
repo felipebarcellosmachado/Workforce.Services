@@ -45,6 +45,23 @@ namespace Workforce.Services.Core.TourScheduleManagement.BaseTourSchedule
             }
         }
 
+        public async Task<IList<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default)
+        {
+            if (environmentId <= 0)
+            {
+                throw new ArgumentException("Environment ID deve ser maior que zero.", nameof(environmentId));
+            }
+
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            using var response = await _httpClient.GetAsync(
+                $"{_baseUri}/all/environment/{environmentId}/open-contexts{contextQuery}",
+                ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<IList<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>>(_jsonOptions, ct)
+                ?? new List<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule>();
+        }
+
         public async Task<Domain.Core.TourScheduleManagement.BaseTourSchedule.Entity.BaseTourSchedule?> GetByEnvironmentIdAndIdAsync(int environmentId, int id, CancellationToken ct = default)
         {
             try

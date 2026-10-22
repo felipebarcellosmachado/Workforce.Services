@@ -8,6 +8,23 @@ namespace Workforce.Services.Core.HumanResourceManagement.WorkingTime
         {
         }
 
+        public async Task<IList<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default)
+        {
+            if (environmentId <= 0)
+            {
+                throw new ArgumentException("Environment ID deve ser maior que zero.", nameof(environmentId));
+            }
+
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            using var response = await _httpClient.GetAsync(
+                $"{_baseUri}/all/environment/{environmentId}/open-contexts{contextQuery}",
+                ct);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<IList<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime>>(_jsonOptions, ct)
+                ?? new List<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime>();
+        }
+
         public async Task<Domain.Core.WorkManagement.WorkingTime.Entity.WorkingTime> GetByEnvironmentIdAndId(int environmentId, int id)
         {
             try
