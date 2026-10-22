@@ -42,6 +42,14 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
                 ?? new List<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>();
         }
 
+        public async Task<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default)
+        {
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>>(
+                $"{BaseUrl}/all/environment/{environmentId}/open-contexts{contextQuery}", ct)
+                ?? new List<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>();
+        }
+
         public async Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization> InsertAsync(Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization entity, CancellationToken ct = default)
         {
             var response = await httpClient.PostAsJsonAsync(BaseUrl, entity, ct);

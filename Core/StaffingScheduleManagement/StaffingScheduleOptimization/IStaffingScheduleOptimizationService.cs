@@ -11,6 +11,7 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> GetByIdAsync(int id, CancellationToken ct = default);
         Task<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>> GetAllAsync(CancellationToken ct = default);
         Task<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>> GetAllByEnvironmentIdAsync(int environmentId, CancellationToken ct = default);
+        Task<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization> InsertAsync(Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization entity, CancellationToken ct = default);
         Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> UpdateAsync(Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization entity, CancellationToken ct = default);
         Task<bool> DeleteByIdAsync(int id, CancellationToken ct = default);

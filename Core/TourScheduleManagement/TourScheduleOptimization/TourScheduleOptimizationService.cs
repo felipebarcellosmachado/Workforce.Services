@@ -40,6 +40,14 @@ namespace Workforce.Services.Core.TourScheduleManagement.TourScheduleOptimizatio
             return await httpClient.GetFromJsonAsync<IList<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>>($"{BaseUrl}/all/environment/{environmentId}", ct) ?? new List<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>();
         }
 
+        public async Task<IList<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>> GetAllOpenByEnvironmentIdAsync(int environmentId, int? contextId, CancellationToken ct = default)
+        {
+            var contextQuery = contextId.HasValue ? $"?contextId={contextId.Value}" : string.Empty;
+            return await httpClient.GetFromJsonAsync<IList<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>>(
+                $"{BaseUrl}/all/environment/{environmentId}/open-contexts{contextQuery}", ct)
+                ?? new List<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization>();
+        }
+
         public async Task<Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization> InsertAsync(Domain.Core.TourScheduleManagement.TourScheduleOptimization.Entity.TourScheduleOptimization entity, CancellationToken ct = default)
         {
             var response = await httpClient.PostAsJsonAsync(BaseUrl, entity, ct);
