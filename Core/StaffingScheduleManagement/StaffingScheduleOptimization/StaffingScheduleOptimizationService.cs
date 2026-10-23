@@ -30,6 +30,18 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
             }
         }
 
+        public async Task<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization?> GetDashboardDetailsAsync(int id, CancellationToken ct = default)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>($"{BaseUrl}/{id}/dashboard-details", ct);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
         public async Task<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>> GetAllAsync(CancellationToken ct = default)
         {
             return await httpClient.GetFromJsonAsync<IList<Domain.Core.StaffingScheduleManagement.StaffingScheduleOptimization.Entity.StaffingScheduleOptimization>>($"{BaseUrl}/all", ct)
@@ -82,11 +94,12 @@ namespace Workforce.Services.Core.StaffingScheduleManagement.StaffingScheduleOpt
                 ?? throw new InvalidOperationException("Failed to deserialize job response");
         }
 
-        public async Task<StaffingScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default)
+        public async Task<StaffingScheduleOptimizationStatusResponse?> GetStatusAsync(int id, CancellationToken ct = default, bool includeDemandCoverage = true)
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<StaffingScheduleOptimizationStatusResponse>($"{BaseUrl}/{id}/status", ct);
+                var coverageQuery = includeDemandCoverage ? string.Empty : "?includeDemandCoverage=false";
+                return await httpClient.GetFromJsonAsync<StaffingScheduleOptimizationStatusResponse>($"{BaseUrl}/{id}/status{coverageQuery}", ct);
             }
             catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
